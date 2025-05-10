@@ -11,7 +11,7 @@
 ## 7.3. Tareas
 
 # 1. La primera tarea es investigar las funcionalidades y opciones que su implementación, es decir su compilador, presenta para limitar el inicio y fin de las fases de traducción.
-Las funcionalidades y opciones del compilador/implementador, se pueden ver en las siguientes 4 fases de tradución:
+Las funcionalidades y opciones del compilador/implementador, se pueden ver en las siguientes 4 fases de traducción:
 
 0-Archivo.c
 
@@ -21,11 +21,11 @@ Las funcionalidades y opciones del compilador/implementador, se pueden ver en la
 
 ->
 
-2-Compilador: Se combierte el codigo preprocesado en codigo ensamblador (.s)
+2-Compilador: Se convierte el código preprocesador en código ensamblador (.s)
 
 ->
 
-3-Asembler: Convierte el codigo ensamblador en codigo maquina o fichero objeto (.o)
+3-Asembler: Convierte el código ensamblador en código maquina o fichero objeto (.o)
 
 ->
 
@@ -83,19 +83,19 @@ int main(void){
  prontf("La respuesta es %d\n");
 ```
 
-·Analisis semantico de la linea 1:
+·Análisis semántico de la linea 1:
 
-int: Especifica el tipo de dato que va a retornar la funcion printf
+int: Especifica el tipo de dato que va a retornar la función printf
 
-printf(): Nombre de la funcion
+printf(): Nombre de la función
 
-const: Calificador de tipo, indica que el dato señalado por el puntero no puede ser modificado atraves de ese puntero
+const: Calificador de tipo, indica que el dato señalado por el puntero no puede ser modificado mediante ese puntero
 
-char*restrict: Define el tipo de parametro s, como un puntero a caracteres
+char*restrict: Define el tipo de parámetro s, como un puntero a caracteres
 
-s: Nombre del parametro
+s: Nombre del parámetro
 
-...: lista de argumnetos variadicos
+...: lista de argumentos variadicos
 
 # e.
 ```
@@ -124,8 +124,8 @@ int main(void)
 ```
 Las diferencias son:
 1. El preprocesador agrego información para el compilador
-   - (#0 "hello3.c") inidica el inicio del codigo funete (.c) y el 0 indica que es el contexto principal
-   - (#0"< built-in>") procesa def internas o macros prefedinidas del compilador
+   - (#0 "hello3.c") índica el inicio del código fuente (.c) y el 0 indica que es el contexto principal
+   - (#0"< built-in>") procesa def internas o macros predefinidas del compilador
    - (#0"< command-line>") procesa opciones o def pasadas desde la linea de comandos
    - (#1"/usr/include/stdc-predef.h" 1 3 4) muestra que incluyo el encabezado
    - (#0"< command-line>" 2) Regresa el contexto
@@ -140,16 +140,16 @@ Las diferencias son:
 # b.
 ·[7.3.1](./7.3.1/hello4.i)
 
-error: lexico (prontf)
+léxico: (prontf)
 
-sintatico: }
+sintético: }
 
-semantico: i
+semántico: i
 
 # c.
 En primer lugar, LCO, LFB0 y LFE0. Se llaman " etiquetas " y representan la ubicación, en memoria, de la siguiente instrucción o dato.
 ```
-.text: indica que empieza la seccion de codigo 
+.text: indica que empieza la sección de código 
 
 .section .rodata: define un string de solo lectura
 
@@ -160,10 +160,10 @@ En primer lugar, LCO, LFB0 y LFE0. Se llaman " etiquetas " y representan la ubic
 |.globl main
 |.type main, @function
 
-declara la funcion main como simbolo global, y abajo comienza su definicion
+declara la funcion main como simbolo global, y abajo comienza su definición
 
 .LFB0:
-	.cfi_startproc   -> instruciones para depuradores
+	.cfi_startproc   -> instrucciones para depuradores
 	endbr64 -> seguridad 
 
 	pushq	%rbp -> guarda el valor actual de la base del stack
@@ -175,13 +175,13 @@ declara la funcion main como simbolo global, y abajo comienza su definicion
 	.cfi_def_cfa_register 6
 	subq	$16, %rsp  -> reserva 16 bytes en la pila para variables locales
 
-    movl	$42, -4(%rbp) -> guarda el numero 42 en una variable local en la pila, posicion: -4(%rbp).
+    movl	$42, -4(%rbp) -> guarda el numero 42 en una variable local en la pila, posición: -4(%rbp).
 
     movl	-4(%rbp), %eax -> carga ese valor 42 en el registro eax (32 bits, registro general)
 
     movl	%eax, %esi -> prepara el primer argumento para printf en el registro %esi
 
-    leaq	.LC0(%rip), %rax -> carga la direccion del string
+    leaq	.LC0(%rip), %rax -> carga la dirección del string
     movq	%rax, %rdi -> Pone esa dirección como primer argumento para printf
 
     movl	$0, %eax -> Limpia %eax
@@ -196,7 +196,7 @@ declara la funcion main como simbolo global, y abajo comienza su definicion
 
     .size	main, .-main
     .ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
-     indica el tamaño de la funcion main 
+     indica el tamaño de la función main 
 
     .section	.note.GNU-stack,"",@progbits
     .section	.note.gnu.property,"a"
@@ -204,19 +204,106 @@ declara la funcion main como simbolo global, y abajo comienza su definicion
 ```
 
 main: 
+
 1- reserva espacio en la pila
+
 2- Guarda el valor 42 en una variable local
-3- carga ese valor en registros para pasarlo a la funcion de impresion
+
+3- carga ese valor en registros para pasarlo a la función de impresión
+
 4- llama a prontf@PLT 
+
 5- devuelve 0 (exit code)
+
+
 # vinculacion 
 # a.
-![alt text](image-1.png)
+Vincular hello4.o con la biblioteca estándar y generar el ejecutable.
+![alt text](image-6.png)
+El ejecutable no se puede generar debido a que encuentra un error léxico en la declaración de la función, el enlazador no encuentra la función prontf en la biblioteca estándar
 # b.
-![alt text](image-2.png)
+Corregir en hello5.c y generar el ejecutable. Solo corregir lo necesario
+para que vincule.
+![alt text](image-7.png)
+el ejecutable no se puede crear debido a un wearning, pero puede ejecutarse.
 # c.
-![alt text](image-3.png)
-# bibliografia:
+Ejecutar y analizar el resultado
+![alt text](image-5.png)
+el resultado es un numero random, ya que no tiene asignado un valor entero.
+
+# Correción de bug
+![alt text](image-8.png)
+
+# 5. Remoción de prototipo
+# a. 
+![alt text](image-9.png)
+# b.
+i. ¿Arroja error o warning?
+![alt text](image-10.png)
+Arroja los dos, 2 warnings y 1 error
+
+ii. ¿Qué es un prototipo y de qué maneras se puede generar?
+Un prototipo de función es una declaración anticipada de una función, que informa al compilador su nombre, tipo de retorno y parámetros esperados.
+```
+return_type function_name(datatype parameter1, datatype parameter2, datatype parameter3………………)
+{
+// function body
+}
+For Example :
+int sum(int a, int b)
+{
+return a + b;
+}
+```
+Se puede generar de dos maneras:
+
+·Incluyendo un encabezado (header), por ejemplo: #include < stdio.h >.
+
+·Escribiendo manualmente la declaración antes de usar la función.
+
+El compilador utiliza prototipos de función para comprobar la corrección de las llamadas a funciones y proporcionar verificación de tipos para evitar que se pasen tipos de datos incompatibles a las funciones. Los prototipos de función suelen ubicarse en los archivos de encabezado o al principio del código, antes de la función principal. También ayudan a detectar posibles errores en tiempo de compilación, en lugar de en tiempo de ejecución.  
+
+iii. ¿Qué es una declaración implícita de una función?
+
+Es cuando se usa una función sin haber declarado previamente su prototipo. Por ejemplo, si el compilador encuentra una sentencia como:
+
+``` sum += convert(line); ```
+
+El compilador asume una firma genérica (por ejemplo, que retorna int) y no verifica los argumentos.
+
+En C99 y versiones posteriores, la declaración implícita está prohibida.
+
+iv. ¿Qué indica la especificación?
+
+Según el estándar C99 y posteriores, toda función debe estar declarada antes de ser utilizada.
+
+La declaración implícita fue permitida en C90, pero está prohibida desde C99.
+
+v. ¿Cómo se comportan las principales implementaciones?
+
+GCC: Permite la declaración implícita solo en modos compatibles con C90, pero lanza warning o error en C99/C11/C17 si no se incluye el prototipo.
+
+Clang: Similar a GCC.
+
+Con -std=c99 o superior, genera error sin el #include < stdio.h>.
+
+vi. ¿Qué es una función built-in?
+
+Son funciones que el compilador reconoce e implementa directamente, a veces con optimización especial.
+
+printf no es una función built-in en C, aunque algunos compiladores pueden ofrecer versiones optimizadas.
+
+Ejemplo de función built-in: __builtin_popcount.
+
+vii.¿Conjeture la razón por la cual gcc se comporta como se comporta?¿Va realmente contra la especificación?
+
+Conjetura: GCC mantiene retrocompatibilidad con código escrito en C90 o versiones más antiguas.
+
+Por eso permite la declaración implícita por defecto, aunque emite warnings.
+
+No va contra la especificación si se compila en modo C90. Pero sí viola C99 en adelante, por eso en esos modos da error.
+
+# bibliografía:
 
 https://www.alegsa.com.ar/Diccionario/C/25059.php#gsc.tab=0
 
@@ -234,3 +321,7 @@ https://pacman128.github.io/static/pcasm-book.pdf
 https://en.cppreference.com/w/c/io/fprintf
 
 https://rodrigocadiz.github.io/SD-Notebooks/SD-D-Assembly.html
+
+https://www.shiksha.com/online-courses/articles/function-prototype-in-c/#:~:text=The%20syntax%20for%20a%20C,%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6)&text=In%20this%20function%20prototype%2C%20we,type%20of%20the%20function%3A%20integer
+
+https://www.zator.com/Cpp/E4_4_3.htm
