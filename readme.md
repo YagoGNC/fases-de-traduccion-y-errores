@@ -149,62 +149,11 @@ semantico: i
 # c.
 En primer lugar, LCO, LFB0 y LFE0. Se llaman " etiquetas " y representan la ubicación, en memoria, de la siguiente instrucción o dato.
 ```
-	.file	"hello4.c"
-	.text
-	.section	.rodata
-.LC0:
-	.string	"La respuesta es %d\n"
-	.text
-	.globl	main
-	.type	main, @function
-main:
-.LFB0:
-	.cfi_startproc
-	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$16, %rsp
-	movl	$42, -4(%rbp)
-	movl	-4(%rbp), %eax
-	movl	%eax, %esi
-	leaq	.LC0(%rip), %rax
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	prontf@PLT
-	movl	$0, %eax
-	leave
-	.cfi_def_cfa 7, 8
-	ret
-	.cfi_endproc
-.LFE0:
-	.size	main, .-main
-	.ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
-	.section	.note.GNU-stack,"",@progbits
-	.section	.note.gnu.property,"a"
-	.align 8
-	.long	1f - 0f
-	.long	4f - 1f
-	.long	5
-0:
-	.string	"GNU"
-1:
-	.align 8
-	.long	0xc0000002
-	.long	3f - 2f
-2:
-	.long	0x3
-3:
-	.align 8
-4
-```
 .text: indica que empieza la seccion de codigo 
 
 .section .rodata: define un string de solo lectura
 
-.LC0: <br>
+.LC0:
   .string "la respuesta es %d\n" define la etiqueta LC0, que contiene el string de formato que se va a usar en prinf
 
 |.text 
@@ -213,46 +162,46 @@ main:
 
 declara la funcion main como simbolo global, y abajo comienza su definicion
 
-.LFB0:<br>
+.LFB0:
 	.cfi_startproc   -> instruciones para depuradores
 	endbr64 -> seguridad 
-<br>
+
 	pushq	%rbp -> guarda el valor actual de la base del stack
-<br>
+
 	.cfi_def_cfa_offset 16
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp -> establece una nueva base stack
-<br>
+
 	.cfi_def_cfa_register 6
 	subq	$16, %rsp  -> reserva 16 bytes en la pila para variables locales
-<br>
+
     movl	$42, -4(%rbp) -> guarda el numero 42 en una variable local en la pila, posicion: -4(%rbp).
-<br>
+
     movl	-4(%rbp), %eax -> carga ese valor 42 en el registro eax (32 bits, registro general)
-<br>
+
     movl	%eax, %esi -> prepara el primer argumento para printf en el registro %esi
-<br>
+
     leaq	.LC0(%rip), %rax -> carga la direccion del string
     movq	%rax, %rdi -> Pone esa dirección como primer argumento para printf
-<br>
+
     movl	$0, %eax -> Limpia %eax
-<br>
+
     call prontf@PLT -> llama a prontf
- <br>   
+  
     movl	$0, %eax -> devuelve 0 como valor de retorno
-<br>
+
     leave -> Es una forma de restaurar el stack antes de salir de la función
-<br>
+
     ret -> Sale de la función y vuelve al sistema operativo.
-<br>
+
     .size	main, .-main
     .ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
      indica el tamaño de la funcion main 
-<br>
+
     .section	.note.GNU-stack,"",@progbits
     .section	.note.gnu.property,"a"
     Seguridad: evita que la pila sea ejecutable
-<br>
+```
 
 main: 
 1- reserva espacio en la pila
@@ -274,3 +223,14 @@ https://www.alegsa.com.ar/Diccionario/C/25059.php#gsc.tab=0
 https://www.guru99.com/es/compiler-design-phases-of-compiler.html
 
 https://programmerclick.com/article/38531616876/
+
+
+https://www.reddit.com/r/learnprogramming/comments/18m6lp/x86_asm_confusion_over_gcc_generated_assemblygas/?rdt=54289
+
+https://cs.lmu.edu/~ray/notes/x86assembly/
+
+https://pacman128.github.io/static/pcasm-book.pdf
+
+https://en.cppreference.com/w/c/io/fprintf
+
+https://rodrigocadiz.github.io/SD-Notebooks/SD-D-Assembly.html
