@@ -14,33 +14,47 @@
 Las funcionalidades y opciones del compilador/implementador, se pueden ver en las siguientes 4 fases de tradución:
 
 0-Archivo.c
+
 ->
+
 1-Preprocesador: Se sustituyen todas las macros y se eliminan los comentarios. (.i)
+
 ->
+
 2-Compilador: Se combierte el codigo preprocesado en codigo ensamblador (.s)
+
 ->
+
 3-Asembler: Convierte el codigo ensamblador en codigo maquina o fichero objeto (.o)
+
 ->
+
 4-Enlazador: Une los archivos objeto con las bibliotecas necesarias para crear un ejecutable funcional.
 
 # ¿Cómo limitamos el inicio y fin de las fases de traducción?
-0-Archivo.c<br>
--><br>
-1-Preprocesador (-E): Detiene el programa después de que se completa el preprocesamiento<br>
--><br>
-2-Compilador (-S): Compila el archivo (.i) y no se ensamblará para generar el código ensamblador<br>
--><br>
-3-Asembler (-c): Genera un archivo objeto en lenguaje máquina (.o)<br>
--><br>
+0-Archivo.c
+
+->
+
+1-Preprocesador (-E): Detiene el programa después de que se completa el preprocesamiento
+
+->
+
+2-Compilador (-S): Compila el archivo (.i) y no se ensamblará para generar el código ensamblador
+
+->
+
+3-Asembler (-c): Genera un archivo objeto en lenguaje máquina (.o)
+
+->
+
 4-Enlazador: Por defecto, sin ningún flag adicional (gcc archivo.o -o ejecutable), completa el proceso de enlazado para generar el ejecutable final 
 
 # 2. La siguiente tarea es poner en práctica lo que se investigó. Para eso se debe transcribir al readme.md cada comando ejecutado y su resultado o error correspondiente a la siguiente secuencia de pasos. También en readme.md se vuelcan las conclusiones y se resuelven los puntos solicitados. Para claridad, mantener en readme.md la misma numeración de la secuencia de pasos.
 
-·[7.3](./7.3/)
+# ·[7.3](./7.3/)
 
-Instrucciones paso a paso para instalar el proyecto:
-
-## 7.3.1 Tareas
+### 7.3.1 Tareas
 # 1. Preprocesador
    
 
@@ -61,7 +75,6 @@ int/*medio*/main(void){
 
 3: El preprocesador elimina los comentarios, haciendo más legible el código para el compilador.
 
-4: Hay un error de escritura en la función, ya que se escribió "prontf" en lugar de "printf", pero el preprocesador no detecta este tipo de errores porque solo se encarga de procesar las directivas y expandir las inclusiones, no de verificar la validez de las llamadas a funciones.
 # c.
 ```
 int printf(const char * restrict s, ...);
@@ -70,7 +83,7 @@ int main(void){
  prontf("La respuesta es %d\n");
 ```
 
-·analisis semantico de la linea 1:
+·Analisis semantico de la linea 1:
 
 int: Especifica el tipo de dato que va a retornar la funcion printf
 
@@ -78,7 +91,7 @@ printf(): Nombre de la funcion
 
 const: Calificador de tipo, indica que el dato señalado por el puntero no puede ser modificado atraves de ese puntero
 
-char*restrict: Define el tipo de parametro s, como uun puntero a caracteres
+char*restrict: Define el tipo de parametro s, como un puntero a caracteres
 
 s: Nombre del parametro
 
@@ -112,22 +125,27 @@ int main(void)
 Las diferencias son:
 1. El preprocesador agrego información para el compilador
    - (#0 "hello3.c") inidica el inicio del codigo funete (.c) y el 0 indica que es el contexto principal
-   - (#0"<built-in>") procesa def internas o macros prefedinidas del compilador
-   - (#0"<command-line>") procesa opciones o def pasadas desde la linea de comandos
+   - (#0"< built-in>") procesa def internas o macros prefedinidas del compilador
+   - (#0"< command-line>") procesa opciones o def pasadas desde la linea de comandos
    - (#1"/usr/include/stdc-predef.h" 1 3 4) muestra que incluyo el encabezado
-   - (#0"<command-line>" 2) Regresa el contexto
+   - (#0"< command-line>" 2) Regresa el contexto
    - (#1 "hello3.c") vuelve al archivo fuente original para continuar el preprocesamiento
   
   0: Marca el inicio de un contexto o archivo principal.
+
   1: Marca el inicio de un archivo incluido por el preprocesador.
 # 2. compilacion
 # a.
 ![alt text](image.png)
 # b.
 ·[7.3.1](./7.3.1/hello4.i)
+
 error: lexico (prontf)
+
 sintatico: }
+
 semantico: i
+
 # c.
 En primer lugar, LCO, LFB0 y LFE0. Se llaman " etiquetas " y representan la ubicación, en memoria, de la siguiente instrucción o dato.
 ```
