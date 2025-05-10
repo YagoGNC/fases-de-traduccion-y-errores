@@ -24,14 +24,14 @@ Las funcionalidades y opciones del compilador/implementador, se pueden ver en la
 4-Enlazador: Une los archivos objeto con las bibliotecas necesarias para crear un ejecutable funcional.
 
 # ¿Cómo limitamos el inicio y fin de las fases de traducción?
-0-Archivo.c
-->
-1-Preprocesador (-E): Detiene el programa después de que se completa el preprocesamiento
-->
-2-Compilador (-S): Compila el archivo (.i) y no se ensamblará para generar el código ensamblador
-->
-3-Asembler (-c): Genera un archivo objeto en lenguaje máquina (.o)
-->
+0-Archivo.c<br>
+-><br>
+1-Preprocesador (-E): Detiene el programa después de que se completa el preprocesamiento<br>
+-><br>
+2-Compilador (-S): Compila el archivo (.i) y no se ensamblará para generar el código ensamblador<br>
+-><br>
+3-Asembler (-c): Genera un archivo objeto en lenguaje máquina (.o)<br>
+-><br>
 4-Enlazador: Por defecto, sin ningún flag adicional (gcc archivo.o -o ejecutable), completa el proceso de enlazado para generar el ejecutable final 
 
 # 2. La siguiente tarea es poner en práctica lo que se investigó. Para eso se debe transcribir al readme.md cada comando ejecutado y su resultado o error correspondiente a la siguiente secuencia de pasos. También en readme.md se vuelcan las conclusiones y se resuelven los puntos solicitados. Para claridad, mantener en readme.md la misma numeración de la secuencia de pasos.
