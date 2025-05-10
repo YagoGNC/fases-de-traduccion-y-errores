@@ -201,49 +201,59 @@ main:
 4
 ```
 .text: indica que empieza la seccion de codigo 
+
 .section .rodata: define un string de solo lectura
-.LC0: 
+
+.LC0: <br>
   .string "la respuesta es %d\n" define la etiqueta LC0, que contiene el string de formato que se va a usar en prinf
+
 |.text 
 |.globl main
 |.type main, @function
+
 declara la funcion main como simbolo global, y abajo comienza su definicion
-.LFB0:
+
+.LFB0:<br>
 	.cfi_startproc   -> instruciones para depuradores
-	endbr64 -> seguridad
+	endbr64 -> seguridad 
+<br>
 	pushq	%rbp -> guarda el valor actual de la base del stack
+<br>
 	.cfi_def_cfa_offset 16
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp -> establece una nueva base stack
+<br>
 	.cfi_def_cfa_register 6
 	subq	$16, %rsp  -> reserva 16 bytes en la pila para variables locales
-
+<br>
     movl	$42, -4(%rbp) -> guarda el numero 42 en una variable local en la pila, posicion: -4(%rbp).
-
+<br>
     movl	-4(%rbp), %eax -> carga ese valor 42 en el registro eax (32 bits, registro general)
-
+<br>
     movl	%eax, %esi -> prepara el primer argumento para printf en el registro %esi
-
+<br>
     leaq	.LC0(%rip), %rax -> carga la direccion del string
     movq	%rax, %rdi -> Pone esa dirección como primer argumento para printf
-
+<br>
     movl	$0, %eax -> Limpia %eax
-
+<br>
     call prontf@PLT -> llama a prontf
-    
+ <br>   
     movl	$0, %eax -> devuelve 0 como valor de retorno
-
+<br>
     leave -> Es una forma de restaurar el stack antes de salir de la función
-
+<br>
     ret -> Sale de la función y vuelve al sistema operativo.
-
+<br>
     .size	main, .-main
     .ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
      indica el tamaño de la funcion main 
-
+<br>
     .section	.note.GNU-stack,"",@progbits
     .section	.note.gnu.property,"a"
     Seguridad: evita que la pila sea ejecutable
+<br>
+
 main: 
 1- reserva espacio en la pila
 2- Guarda el valor 42 en una variable local
