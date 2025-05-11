@@ -141,17 +141,7 @@ El compilador arroja 2 warnings y 1 error.
 
 ---
 
-### Conclusiones
 
-1. **Errores comunes**:
-   - Declaraciones implícitas de funciones.
-   - Uso incorrecto de prototipos.
-   - Errores léxicos y semánticos.
-
-2. **Buenas prácticas**:
-   - Siempre incluir los encabezados necesarios.
-   - Declarar prototipos de funciones antes de usarlas.
-   - Usar estándares modernos de C (C99 o superior).
 
 ---
 
